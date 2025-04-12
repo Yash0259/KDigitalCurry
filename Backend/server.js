@@ -1,9 +1,16 @@
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
-const userRoutes = require("./src/routes/userRoutes")
+const instructorRoutes = require("./src/routes/instructorRoutes");
+const courseRoutes = require("./src/routes/courseRoutes");
+const lectureRoutes = require("./src/routes/lectureRoutes");
+const mongoose = require("mongoose");
 
 dotenv.config();
+
+mongoose.connect(process.env.MONGO_URI)
+.then(()=> console.log("Connect to MongoDB Atlas"))
+.catch((err)=> console.log("MongoDB Error : ",err))
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -15,7 +22,10 @@ app.use(cors({
 }));
 
 app.use(express.json());   //allows parseing json in requests
-app.use("/users", userRoutes);
+app.use("/instructors", instructorRoutes);
+app.use("/course",courseRoutes);
+app.use("/lectures",lectureRoutes);
+
 
 //Test route
 app.get("/", (req, res) => {

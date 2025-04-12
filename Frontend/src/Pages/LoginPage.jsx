@@ -50,13 +50,14 @@ const LoginPage = () => {
             sessionStorage.setItem("token", token);
 
             // Navigate based on userType
-            if (user.userType === "admin") {
-                navigate("/adminPage");
-            } else if (user.userType === "student") {
-                navigate("/userpage");
-            } else {
-                setError("Unknown user type.");
-            }
+            if (role === 'admin') {
+                localStorage.setItem('userRole', 'admin');
+                navigate('/admin');
+              } else if (role === 'instructor') {
+                localStorage.setItem('userRole', 'instructor');
+                navigate('/instructor');
+              }
+              
 
         } catch (err) {
             console.error("Login error:", err);
