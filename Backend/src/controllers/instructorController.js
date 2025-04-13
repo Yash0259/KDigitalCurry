@@ -3,7 +3,7 @@ const Instructor = require("../Models/Instructor");
 // Create Instructor
 const createInstructor = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, phone, password } = req.body; // ✅ include phone
 
     // Check if instructor already exists
     const existing = await Instructor.findOne({ email });
@@ -11,7 +11,7 @@ const createInstructor = async (req, res) => {
       return res.status(400).json({ message: "Instructor with this email already exists" });
     }
 
-    const instructor = new Instructor({ name, email, password });
+    const instructor = new Instructor({ name, email, phone, password }); // ✅ include phone
     await instructor.save();
 
     res.status(201).json({ message: "Instructor created", instructor });
@@ -19,6 +19,7 @@ const createInstructor = async (req, res) => {
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };
+
 
 // Get all Instructors
 const getAllInstructors = async (req, res) => {

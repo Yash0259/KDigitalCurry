@@ -23,7 +23,7 @@ app.use(cors({
 
 app.use(express.json());   //allows parseing json in requests
 app.use("/instructors", instructorRoutes);
-app.use("/course",courseRoutes);
+app.use("/courses",courseRoutes);
 app.use("/lectures",lectureRoutes);
 
 

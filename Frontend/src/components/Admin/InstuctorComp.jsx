@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchInstructors, addNewInstructor, updateInstructor, deleteInstructor } from '../../Redux/instructorSlice';
 import {
   Box,
   Button,
@@ -15,23 +17,29 @@ import {
   IconButton,
   FormControl,
   Select,
-  InputLabel
+  InputLabel,
+  CircularProgress,
+  Alert
 } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import AddInstructor from './AddInstructor';
+import EditInstructor from './EditInstructor';
 
 const InstructorComp = () => {
+  const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState(null);
   const [currentInstructor, setCurrentInstructor] = useState(null);
   const [addModel, setAddModel] = useState(false);
-  
-  
-  const [instructors, setInstructors] = useState([
-    { name: 'John Doe', phone: '(123) 456-7890', email: 'john.doe@example.com' },
-    { name: 'Jane Smith', phone: '(987) 654-3210', email: 'jane.smith@example.com' },
-    { name: 'Mark Johnson', phone: '(555) 123-4567', email: 'mark.johnson@example.com' },
-    { name: 'Emily White', phone: '(333) 987-6543', email: 'emily.white@example.com' },
-  ]);
+  const [editModel, setEditModel] = useState(false);
+
+
+  // Get data from Redux store
+  const { instructors, status, error } = useSelector((state) => state.instructor);
+
+  // Fetch instructors when component mounts
+  useEffect(() => {
+    dispatch(fetchInstructors());
+  }, [dispatch]);
 
   const handleMenuClick = (event, instructor) => {
     setAnchorEl(event.currentTarget);
@@ -46,10 +54,57 @@ const InstructorComp = () => {
   const handleOpenModal = () => setAddModel(true);
   const handleCloseModal = () => setAddModel(false);
 
+  const handleOpenEditModal = () => setEditModel(true);
+  const handleCloseEditModal = () => setEditModel(false);
+
   const handleSaveInstructor = (newInstructor) => {
-    setInstructors(prev => [...prev, newInstructor]);
-    handleCloseModal();
+    dispatch(addNewInstructor(newInstructor))
+      .unwrap()
+      .then(() => {
+        handleCloseModal();
+      })
+      .catch((error) => {
+        console.error('Failed to save instructor:', error);
+      });
   };
+
+  const handleSaveUpdatedInstructor = (updatedInstructor) => {
+    dispatch(updateInstructor(updatedInstructor._id))
+    .unwrap()
+    .then(() => handleCloseEditModal())
+    .catch((error) => {
+      console.error('Failed to update instructor:', error);
+    });
+  };
+  const handleDeleteInstructor = () => {
+    if (currentInstructor?._id) {
+      dispatch(deleteInstructor(currentInstructor._id))
+      .unwrap()
+      .then(() => handleClose())
+      .catch((error) => {
+        console.error('Failed to delete instructor:', error);
+      });
+    }
+  };
+  
+  // Loading state
+  if (status === 'loading') {
+    return (
+      <Box display="flex" justifyContent="center" p={3}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  // Error state
+  if (status === 'failed') {
+    return (
+      <Box p={3}>
+        <Alert severity="error">Error loading instructors: {error}</Alert>
+      </Box>
+    );
+  }
+
 
   return (
     <Box p={3}>
@@ -62,19 +117,26 @@ const InstructorComp = () => {
             <MenuItem value="active">Active</MenuItem>
           </Select>
         </FormControl>
-        <Button 
-          variant="contained" 
-          sx={{ backgroundColor: '#1e4db7' }} 
+        <Button
+          variant="contained"
+          sx={{ backgroundColor: '#1e4db7' }}
           onClick={handleOpenModal}
         >
           Add Instructor
         </Button>
       </Box>
 
-      <AddInstructor 
+      <AddInstructor
         open={addModel}
         onClose={handleCloseModal}
         onSave={handleSaveInstructor}
+      />
+
+      <EditInstructor
+        open={editModel}
+        onClose={handleCloseEditModal}
+        onSave={handleSaveUpdatedInstructor}
+        initialData={currentInstructor}
       />
 
       <Typography variant="h6" mb={1}>Instructor</Typography>
@@ -108,9 +170,9 @@ const InstructorComp = () => {
         </Table>
       </TableContainer>
 
-      <Menu 
-        anchorEl={anchorEl} 
-        open={Boolean(anchorEl)} 
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
         onClose={handleClose}
         anchorOrigin={{
           vertical: 'top',
@@ -121,8 +183,11 @@ const InstructorComp = () => {
           horizontal: 'right',
         }}
       >
-        <MenuItem onClick={handleClose}>Edit {currentInstructor?.name}</MenuItem>
-        <MenuItem onClick={handleClose}>Delete {currentInstructor?.name}</MenuItem>
+        <MenuItem onClick={handleOpenEditModal}>Edit {currentInstructor?.name}</MenuItem>
+        <MenuItem onClick={handleDeleteInstructor}>
+          Delete {currentInstructor?.name}
+        </MenuItem>
+
       </Menu>
     </Box>
   );

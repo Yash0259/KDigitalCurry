@@ -7,7 +7,6 @@ exports.createCourse = async (req, res) => {
       name: req.body.name,
       level: req.body.level,
       description: req.body.description,
-      image: req.body.image || null
     });
     await course.save();
     res.status(201).json(course);
