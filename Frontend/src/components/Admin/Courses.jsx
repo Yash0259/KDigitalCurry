@@ -1,9 +1,12 @@
-import React from 'react'
+// Courses.jsx
+import React from 'react';
+import { Typography } from '@mui/material';
 
 const Courses = () => {
   return (
-    <div>Courses</div>
-  )
-}
+    <Typography variant="h4">Courses Management</Typography>
 
-export default Courses
+  );
+};
+
+export default Courses;

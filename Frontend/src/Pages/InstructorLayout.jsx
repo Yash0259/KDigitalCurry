@@ -1,16 +1,12 @@
-import Layout from "../components/Layout/Layout";
-import {Routes , Route} from "react-router-dom";
-import InstructorLec from "../components/Instructor/InstructorLec";
+import EduDashDrawer from '../components/Layout/EduDashDrawer';
+import { Outlet } from 'react-router-dom';
 
 
 const InstructorLayout = () => {
   return (
-    <Layout role="instructor">
-      <Routes>
-        <Route index element={<InstructorLec/>} />
-        <Route path="lectures" element={<InstructorLec />} />
-      </Routes>
-    </Layout>
-  );
-}
+    <EduDashDrawer role="instructor">
+        <Outlet />
+    </EduDashDrawer>
+);
+};
 export default InstructorLayout;
