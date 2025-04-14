@@ -47,7 +47,12 @@ const initialState = {
 
 const lectureSlice = createSlice({
   name: 'lectures',
-  initialState,
+  name: 'lectures',
+  initialState: {
+    instructors: [],
+    status: 'idle',
+    error: null,
+  },
   reducers: {},
   extraReducers: (builder) => {
     builder

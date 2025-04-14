@@ -119,14 +119,7 @@ const InstructorComp = () => {
   return (
     <Box p={3}>
       <Box display="flex" justifyContent="space-between" alignItems="center" flexWrap="wrap" gap={2} mb={2}>
-        <FormControl sx={{ minWidth: 200 }} size="small">
-          <InputLabel>Filters</InputLabel>
-          <Select label="Filters" defaultValue="">
-            <MenuItem value="">None</MenuItem>
-            <MenuItem value="recent">Recently Added</MenuItem>
-            <MenuItem value="active">Active</MenuItem>
-          </Select>
-        </FormControl>
+        
         <Button
           variant="contained"
           sx={{ backgroundColor: '#1e4db7' }}
