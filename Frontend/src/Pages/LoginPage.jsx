@@ -28,7 +28,7 @@ const LoginPage = () => {
         setError("");
 
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/login`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/instructors/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -43,27 +43,27 @@ const LoginPage = () => {
                 return;
             }
 
-            const { user, token } = data;
+            const { user } = data;
 
-            // Store token and user info in sessionStorage
+            // Store user info
             sessionStorage.setItem("user", JSON.stringify(user));
-            sessionStorage.setItem("token", token);
+            localStorage.setItem('userRole', user.role);
 
-            // Navigate based on userType
-            if (role === 'admin') {
-                localStorage.setItem('userRole', 'admin');
+            // Navigate based on user role
+            if (user.role === 'admin') {
                 navigate('/admin');
-              } else if (role === 'instructor') {
-                localStorage.setItem('userRole', 'instructor');
+            } else if (user.role === 'instructor') {
                 navigate('/instructor');
-              }
-              
+            } else {
+                setError("Unknown user role.");
+            }
 
         } catch (err) {
             console.error("Login error:", err);
             setError("Something went wrong during login.");
         }
     };
+
 
     return (
         <Box
@@ -95,7 +95,7 @@ const LoginPage = () => {
                 }}
             >
                 <Typography variant="h5" gutterBottom>
-                    Student Management
+                    Lecture Management
                 </Typography>
                 <Typography variant="body2" sx={{ opacity: 0.7, marginBottom: 2 }}>
                     Keep it all together and you'll be fine

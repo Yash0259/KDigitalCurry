@@ -1,4 +1,3 @@
-// components/EditInstructor.js
 import React, { useState, useEffect } from 'react';
 import {
   Box, Dialog, DialogTitle, DialogContent, DialogActions,
@@ -7,6 +6,7 @@ import {
 
 const EditInstructor = ({ open, onClose, onSave, initialData = {} }) => {
   const [instructor, setInstructor] = useState({
+    _id:'',
     name: '',
     phone: '',
     email: '',
@@ -16,6 +16,7 @@ const EditInstructor = ({ open, onClose, onSave, initialData = {} }) => {
   useEffect(() => {
     if (initialData) {
       setInstructor(initialData);
+      console.log(initialData);
     }
   }, [initialData]);
 

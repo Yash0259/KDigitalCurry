@@ -5,7 +5,7 @@ import lectureReducer from './lectureSlice';
 
 const store = configureStore({
     reducer:{
-        instructor: instructorReducer,
+        instructors: instructorReducer,
         courses:coursesReducer,
         lectures:lectureReducer,
     }

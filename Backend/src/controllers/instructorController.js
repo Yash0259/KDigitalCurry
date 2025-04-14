@@ -1,6 +1,44 @@
+require('dotenv').config();
 const Instructor = require("../Models/Instructor");
 
-// Create Instructor
+const loginUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // Check for admin login
+    if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
+      return res.status(200).json({
+        message: "Admin login successful",
+        user: {
+          role: "admin",
+          email,
+        },
+      });
+    }
+
+    // Check for instructor login
+    const instructor = await Instructor.findOne({ email, password });
+
+    if (!instructor) {
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+
+    res.status(200).json({
+      message: "Instructor login successful",
+      user: {
+        role: "instructor",
+        id: instructor._id,
+        name: instructor.name,
+        email: instructor.email,
+      },
+    });
+
+  } catch (err) {
+    res.status(500).json({ message: "Login failed", error: err.message });
+  }
+};
+
+
 const createInstructor = async (req, res) => {
   try {
     const { name, email, phone, password } = req.body; // ✅ include phone
@@ -84,4 +122,5 @@ module.exports = {
   getInstructor,
   updateInstructor,
   deleteInstructor,
+  loginUser
 };

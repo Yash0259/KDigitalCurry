@@ -25,7 +25,6 @@ export const updateCourse = createAsyncThunk(
   'courses/updateCourse',
   async (courseData) => {
     const response = await axios.put(`${API_URL}/courses/${courseData._id}`, courseData);
-
     return response.data;
     }
 );

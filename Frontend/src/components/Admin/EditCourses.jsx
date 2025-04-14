@@ -1,4 +1,3 @@
-// components/EditCourse.js
 import React, { useState, useEffect } from 'react';
 import {
   Box,
@@ -12,6 +11,7 @@ import {
 
 const EditCourse = ({ open, onClose, onSave, initialData }) => {
   const [course, setCourse] = useState({
+    _id:'',
     name: '',
     level: '',
     description: ''
@@ -19,11 +19,7 @@ const EditCourse = ({ open, onClose, onSave, initialData }) => {
 
   useEffect(() => {
     if (initialData) {
-      setCourse({
-        name: initialData.name,
-        level: initialData.level,
-        description: initialData.description
-      });
+      setCourse(initialData);
     }
   }, [initialData]);
 

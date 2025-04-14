@@ -58,34 +58,49 @@ const Courses = () => {
   const handleSaveCourse = (newCourse) => {
     dispatch(addNewCourse(newCourse))
       .unwrap()
-      .then(() => handleCloseModal())
+      .then(() => {
+        alert('Course added successfully!');
+        handleCloseModal();
+        dispatch(fetchCourses()); // Refresh the list
+      })
       .catch((error) => {
+        alert('Failed to save course.');
         console.error('Failed to save course:', error);
-      });
-  };
-
-  const handleSaveUpdatedCourse = (updatedCourse) => {
-    dispatch(updateCourse(updatedCourse._id)) // Only if updatedCourse includes `_id`
-      .unwrap()
-      .then(() => handleCloseEditModal())
-      .catch((error) => {
-        console.error('Failed to update course:', error);
       });
   };
   
 
+  const handleSaveUpdatedCourse = (updatedCourse) => {
+    dispatch(updateCourse(updatedCourse)) // Send full course object
+      .unwrap()
+      .then(() => {
+        alert('Course updated successfully!');
+        handleCloseEditModal();
+        dispatch(fetchCourses()); // Refresh the list
+      })
+      .catch((error) => {
+        alert('Failed to update course.');
+        console.error('Failed to update course:', error);
+      });
+  };
+  
+  
   const handleDeleteCourse = () => {
-    if (currentCourse?.id) {
+    if (currentCourse?._id) {
       dispatch(deleteCourse(currentCourse._id))
         .unwrap()
         .then(() => {
+          alert('Course deleted successfully!');
           handleClose();
+          dispatch(fetchCourses()); // Refresh
         })
         .catch((error) => {
+          alert('Failed to delete course.');
           console.error('Failed to delete course:', error);
         });
     }
   };
+  
 
   if (status === 'loading') {
     return (

@@ -34,7 +34,7 @@ const InstructorComp = () => {
 
 
   // Get data from Redux store
-  const { instructors, status, error } = useSelector((state) => state.instructor);
+  const { instructors, status, error } = useSelector((state) => state.instructors);
 
   // Fetch instructors when component mounts
   useEffect(() => {
@@ -61,32 +61,42 @@ const InstructorComp = () => {
     dispatch(addNewInstructor(newInstructor))
       .unwrap()
       .then(() => {
+        alert("Instructor added successfully!");
+        dispatch(fetchInstructors()); // 👈 refresh the list
         handleCloseModal();
       })
       .catch((error) => {
+        alert("Failed to add instructor.");
         console.error('Failed to save instructor:', error);
       });
   };
 
   const handleSaveUpdatedInstructor = (updatedInstructor) => {
-    dispatch(updateInstructor(updatedInstructor._id))
-    .unwrap()
-    .then(() => handleCloseEditModal())
-    .catch((error) => {
-      console.error('Failed to update instructor:', error);
-    });
+    dispatch(updateInstructor(updatedInstructor))
+      .unwrap()
+      .then(() => {
+        alert("Instructor updated successfully!");
+        dispatch(fetchInstructors()); // 👈 refresh the list
+        handleCloseEditModal();
+      })
+      .catch((error) => {
+        console.error('Failed to update instructor:', error);
+      });
   };
   const handleDeleteInstructor = () => {
     if (currentInstructor?._id) {
       dispatch(deleteInstructor(currentInstructor._id))
-      .unwrap()
-      .then(() => handleClose())
-      .catch((error) => {
-        console.error('Failed to delete instructor:', error);
-      });
+        .unwrap()
+        .then(() => {
+          alert("Instructor Deleted Successfully! ")
+          handleClose()})
+        .catch((error) => {
+          alert("Failed to delete instructor.");
+          console.error('Failed to delete instructor:', error);
+        });
     }
   };
-  
+
   // Loading state
   if (status === 'loading') {
     return (

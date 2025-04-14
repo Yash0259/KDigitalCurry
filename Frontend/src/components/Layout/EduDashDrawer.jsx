@@ -22,14 +22,12 @@ export default function EduDashDrawer({ role, children }) {
     const navigate = useNavigate();
 
     const adminMenuItems = [
-        { text: 'Dashboard', icon: <HomeIcon />, path: '' }, // Relative to /admin
         { text: 'Instructor List', icon: <PeopleIcon />, path: 'instructors' },
         { text: 'Courses', icon: <BookIcon />, path: 'courses' },
         { text: 'Lectures', icon: <VideoLibraryIcon />, path: 'lectures' },
     ];
 
     const instructorMenuItems = [
-        { text: 'Dashboard', icon: <HomeIcon />, path: '/instructor' },
         { text: 'Lectures', icon: <VideoLibraryIcon />, path: '/instructor/lectures' },
     ];
 
@@ -89,7 +87,7 @@ export default function EduDashDrawer({ role, children }) {
                 {/* Logout */}
                 <List>
                     <ListItem disablePadding>
-                        <ListItemButton onClick={() => navigate('/')}>
+                        <ListItemButton onClick={() => navigate('/login')}>
                             <ListItemIcon sx={{ color: '#555' }}>
                                 <LogoutIcon />
                             </ListItemIcon>

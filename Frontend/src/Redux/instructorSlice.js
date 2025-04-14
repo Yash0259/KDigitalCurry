@@ -24,7 +24,7 @@ export const addNewInstructor = createAsyncThunk(
 export const updateInstructor = createAsyncThunk(
   'instructors/updateInstructor',
   async (instructorData) => {
-    const response = await axios.put(`${API_URL}/instructors/${instructorData.id}`, instructorData);
+    const response = await axios.put(`${API_URL}/instructors/${instructorData._id}`, instructorData);
     return response.data;
   }
 );

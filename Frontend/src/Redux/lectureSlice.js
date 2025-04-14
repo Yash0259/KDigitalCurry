@@ -38,7 +38,11 @@ const initialState = {
 
 const lectureSlice = createSlice({
   name: 'lectures',
-  initialState,
+  initialState: {
+    instructors: [],
+    status: 'idle',
+    error: null,
+  },
   reducers: {},
   extraReducers: (builder) => {
     builder
@@ -54,7 +58,7 @@ const lectureSlice = createSlice({
         state.status = 'failed';
         state.error = action.error.message;
       })
-      
+
       // Add a new lecture
       .addCase(addLecture.fulfilled, (state, action) => {
         state.lectures.push(action.payload);

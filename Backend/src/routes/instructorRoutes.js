@@ -5,9 +5,11 @@ const {
   getAllInstructors,
   getInstructor,
   updateInstructor,
-  deleteInstructor
+  deleteInstructor,
+  loginUser
 } = require("../controllers/instructorController");
 
+router.post("/login", loginUser);
 // CRUD routes
 router.post("/", createInstructor);
 router.get("/", getAllInstructors);
