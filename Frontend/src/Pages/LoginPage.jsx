@@ -47,6 +47,7 @@ const LoginPage = () => {
 
             // Store user info
             sessionStorage.setItem("user", JSON.stringify(user));
+            sessionStorage.setItem("instructorId", user._id); 
             localStorage.setItem('userRole', user.role);
 
             // Navigate based on user role

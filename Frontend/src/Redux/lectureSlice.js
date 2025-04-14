@@ -30,6 +30,15 @@ export const deleteLecture = createAsyncThunk(
   }
 );
 
+// Mark attendance for a specific lecture
+export const markAttendance = createAsyncThunk(
+  'lectures/markAttendance',
+  async ({ lectureId }) => {
+    const response = await axios.patch(`${API_URL}/lectures/${lectureId}/attendance`, { status: 'Attended' });
+    return response.data;
+  }
+);
+
 const initialState = {
   lectures: [],
   status: 'idle', // 'idle' | 'loading' | 'succeeded' | 'failed'
@@ -38,11 +47,7 @@ const initialState = {
 
 const lectureSlice = createSlice({
   name: 'lectures',
-  initialState: {
-    instructors: [],
-    status: 'idle',
-    error: null,
-  },
+  initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
@@ -67,6 +72,16 @@ const lectureSlice = createSlice({
       // Delete a lecture
       .addCase(deleteLecture.fulfilled, (state, action) => {
         state.lectures = state.lectures.filter((lecture) => lecture._id !== action.payload);
+      })
+
+      // Mark attendance
+      .addCase(markAttendance.fulfilled, (state, action) => {
+        // Find the lecture by id and update its attendance status
+        const updatedLecture = action.payload;
+        const index = state.lectures.findIndex((lecture) => lecture._id === updatedLecture._id);
+        if (index !== -1) {
+          state.lectures[index] = updatedLecture;
+        }
       });
   }
 });
