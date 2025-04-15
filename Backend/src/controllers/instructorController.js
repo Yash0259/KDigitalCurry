@@ -41,7 +41,7 @@ const loginUser = async (req, res) => {
 
 const createInstructor = async (req, res) => {
   try {
-    const { name, email, phone, password } = req.body; // ✅ include phone
+    const { name, email, phone, password } = req.body; //  include phone
 
     // Check if instructor already exists
     const existing = await Instructor.findOne({ email });
@@ -49,7 +49,7 @@ const createInstructor = async (req, res) => {
       return res.status(400).json({ message: "Instructor with this email already exists" });
     }
 
-    const instructor = new Instructor({ name, email, phone, password }); // ✅ include phone
+    const instructor = new Instructor({ name, email, phone, password }); 
     await instructor.save();
 
     res.status(201).json({ message: "Instructor created", instructor });

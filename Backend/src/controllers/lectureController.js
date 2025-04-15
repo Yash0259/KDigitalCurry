@@ -94,37 +94,7 @@ exports.getLectures = async (req, res) => {
   }
 };
 
-// Update lecture (with conflict checking)
-exports.updateLecture = async (req, res) => {
-  try {
-    const lecture = await Lecture.findById(req.params.id);
-    if (!lecture) {
-      return res.status(404).json({ error: "Lecture not found" });
-    }
 
-    // Create temp lecture with updates to test for conflicts
-    const updatedLecture = new Lecture({
-      ...lecture.toObject(),
-      ...req.body,
-      _id: lecture._id // Keep same ID
-    });
-
-    // Manually trigger pre-save hook for conflict checking
-    await updatedLecture.validate();
-    await updatedLecture.save(); // This will trigger the pre-save hook
-
-    // If no conflict, apply updates to original
-    Object.assign(lecture, req.body);
-    await lecture.save();
-
-    res.json(lecture);
-  } catch (err) {
-    if (err.message.includes('already booked')) {
-      return res.status(409).json({ error: err.message });
-    }
-    res.status(400).json({ error: err.message });
-  }
-};
 
 // Mark attendance
 exports.markAttendance = async (req, res) => {

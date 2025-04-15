@@ -62,7 +62,7 @@ const InstructorComp = () => {
       .unwrap()
       .then(() => {
         alert("Instructor added successfully!");
-        dispatch(fetchInstructors()); // 👈 refresh the list
+        dispatch(fetchInstructors()); // refresh the list
         handleCloseModal();
       })
       .catch((error) => {

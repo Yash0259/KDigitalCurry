@@ -3,7 +3,6 @@ const router = express.Router();
 const {
   createLecture,
   getLectures,
-  updateLecture,
   markAttendance,
   deleteLecture
 } = require('../controllers/lectureController');
@@ -14,8 +13,6 @@ router.post('/', createLecture);
 // Get lectures (with optional filtering)
 router.get('/', getLectures);
 
-// Update lecture details
-router.put('/:id', updateLecture);
 
 // Mark attendance
 router.patch('/:id/attendance', markAttendance);
